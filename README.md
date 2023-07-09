@@ -1,4 +1,4 @@
-# py-unzip
+# py-unzip_script
 kkyick2, 20230707, for hkstp use
 
 # How to use
@@ -6,7 +6,7 @@ kkyick2, 20230707, for hkstp use
 method1: Usage: python unzip_script.py <full_root_path_to_process>
 
 ```sh
-col@ub22201:~/projects/python/py-unzip$ python3 unzip_script.py /home/col/projects/python/py-unzip/report_dir
+col@ub22201:~/projects/python/py-unzip_script$ python3 unzip_script_script.py /home/col/projects/python/py-unzip_script/report_dir
 ```
 
 method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
@@ -56,7 +56,7 @@ report_dir
 To create a cron job that executes a script every 15 minutes between 12:00am to 6:00am:
 
 ```sh
-*/15 0-5 * * * /usr/bin/python3 /home/col/projects/python/py-unzip/unzip_script.py /home/col/projects/root
+*/15 0-5 * * * /usr/bin/python3 /home/col/projects/python/py-unzip_script/unzip_script.py /home/col/projects/root
 
 */15: Run the command every 15 minutes
 0-5: Run the command for hours between 0 (midnight) and 5 (5:59am)
