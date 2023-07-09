@@ -140,8 +140,8 @@ def process_input_dir(dir):
 
     for f in os.listdir(dir):
         print('#'*50)
-        print(f'START PROCESSING PATH: {f} in {dir}')
-        logger.info(f'START PROCESSING PATH: {f} in {dir}')
+        print(f'###### START PROCESSING PATH: {dir}/{f}')
+        logger.info(f'###### START PROCESSING PATH: {dir}/{f}')
 
         if re.match(pattern, f):
             print(f' found match: {f}')
@@ -164,6 +164,8 @@ if __name__ == "__main__":
     dir = sys.argv[1]
     # dir = '/home/col/projects/python/py-unzip/report_dir'
 
+    print(f'###')
+    logger.info(f'###')
     print(f'###')
     logger.info(f'###')
     print(f'############### START SCRIPT TO SEARCH Txxx in: {dir} ############')
