@@ -1,9 +1,9 @@
 import sys,os,re,zipfile,time
 from datetime import datetime
-# kkyick2, 20230707, for hkstp
+# kkyick2, 20230707 for hkstp unzip script
+#
 # === How to use ===
-# method1: Usage: python unzip_script.py <full_root_path_to_process>
-# method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
+# Usage: python unzip_script.py <full_path_to_process>
 #
 # === Description ===
 # This script reead below folder structure, unzip pattern "xxxReport-YYYY-MM-DD-HHMM_SSSS.zip" and rename to "xxxReport-YYYY-MM-DD.csv"
@@ -37,7 +37,7 @@ from datetime import datetime
 #      |--- IPS Report-2023-02-14-1704.csv
 #      |--- Web Usage Summary Report-2023-02-14.csv
 #
-# === crontab -e example===
+# === crontab -e===
 # To create a cron job that executes a script every 15 minutes between 12:00am to 6:00am:
 #
 # */15 0-5 * * * /usr/bin/python3 /home/col/projects/python/py-unzip/unzip_script.py /home/col/projects/root
@@ -84,61 +84,64 @@ logger.addHandler(file_handler_debug)
 logger.addHandler(stream_handler)
 
 #################################################
-# code for unzip and rename script
+# code for unzip and rename
 #################################################
 
 def unzip_n_delete(dir):
     os.chdir(dir) # change directory from working dir to dir with files
     print(f'### Script to unzip and delete zip in dir: {dir}')
     logger.info(f'### Script to unzip and delete zip in dir: {dir}')
-    try:
-        for f in os.listdir(dir): # loop through items in dir
-            pattern = r"^(.*?)\sReport-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
-            print(f'processing file: {f}')
-            logger.debug(f'processing file: {f}')
+    ReportType=["WEB-","IPS-","DNS-"]
+    for f in os.listdir(dir): # loop through items in dir
+        pattern = r"^(.*?)\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
+        print(dir)
+        print(f'processing file: {f}')
+        logger.debug(f'processing file: {f}')
 
-            if re.match(pattern, f):
-                print(f' unzip file: {f}')
-                logger.info(f' unzip file: {f}')
+        if re.match(pattern, f):
+            print(f' unzip file: {f}')
+            logger.info(f' unzip file: {f}')
 
-                fpath = os.path.abspath(f) # get full path
-                zip_ref = zipfile.ZipFile(fpath) # create zipfile object
-                zip_ref.extractall(dir) # extract
-                zip_ref.close() # close
-                os.remove(fpath) # delete zipped file
-            else:
-                print(f' Not match, skip: {f}')
-                logger.info(f' Not match, skip: {f}')
-    except Exception:
-        pass
-    return
+            fpath = os.path.abspath(f) # get full path
+            zip_ref = zipfile.ZipFile(fpath) # create zipfile object
+            zip_ref.extractall(dir) # extract
+            zip_ref.close() # close
+            os.remove(fpath) # delete zipped file
+        else:
+            print(f' Not match, skip: {f}')
+            logger.info(f' Not match, skip: {f}')
+    return    
 
 def rename_csv(dir):
     os.chdir(dir) # change directory from working dir to dir with files
     print(f'### Script to rename csv in dir: {dir}')
     logger.info(f'### Script to rename csv in dir: {dir}')
-    try:
-        for f in os.listdir(dir):
-            pattern = r"^(.*?)\sReport-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
+    for f in os.listdir(dir):
+        try:
+            pattern = r"^(.*?)\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
             print(f'processing file: {f}')
             logger.debug(f'processing file: {f}')
-
+        
             if re.match(pattern, f):
                 print(f' found match: {f}')
                 logger.info(f' found match: {f}')
                 fn = f.split("-")
-                f_newname = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'.csv'
-                if os.path.exists(f_newname) == True:
+                f_newname = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.csv'
+                f_fullpath = dir + "/"+f_newname
+                print("<<<<<<<<<<<<<<<" + f_fullpath + ">>>>>>>>>>>>>>>>>>>>>")
+                if os.path.exists(f_newname) == True:                
+                    print ("Duplicate Filename")
+                    print (f)
                     os.remove(f)
-                    logger.info(f' found duplicate filename, deleted old file: {f_newname}')
+                    logger.info(f' duplicate filename, deleted: {f_newname}')
                 print(f' rename to: {f_newname}')
                 logger.info(f' rename to: {f_newname}')
                 os.rename(f, f_newname)
             else:
                 print(f' Not match, skip: {f}')
                 logger.info(f' Not match, skip: {f}')
-    except Exception:
-        pass
+        except Exception:
+            pass
     return
 
 def process_input_dir(dir):
