@@ -62,13 +62,13 @@ DATE = datetime.now().strftime("%Y%m%d")
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Create Handlers(Filehandler with filename| StramHandler with stdout)
-file_handler_info = logging.FileHandler(os.path.join(script_dir, 'unzip_script_info_'+DATE+'.log'))
-file_handler_debug = logging.FileHandler(os.path.join(script_dir, 'unzip_script_debug_'+DATE+'.log'))
+file_handler_info = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_info_'+DATE+'.log'))
+# file_handler_debug = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_debug_'+DATE+'.log'))
 stream_handler = logging.StreamHandler(sys.stdout)
 
 # Set Additional log level in Handlers if needed
 file_handler_info.setLevel(logging.INFO)
-file_handler_debug.setLevel(logging.DEBUG)
+# file_handler_debug.setLevel(logging.DEBUG)
 stream_handler.setLevel(logging.WARNING)
 
 # Create Formatter and Associate with Handlers
@@ -77,12 +77,12 @@ tz = time.strftime('%z')
 formatter = logging.Formatter(
     '%(asctime)s ' + tz + ' - %(name)s - %(levelname)s - %(message)s')
 file_handler_info.setFormatter(formatter)
-file_handler_debug.setFormatter(formatter)
+# file_handler_debug.setFormatter(formatter)
 stream_handler.setFormatter(formatter)
 
 # Add Handlers to logger
 logger.addHandler(file_handler_info)
-logger.addHandler(file_handler_debug)
+# logger.addHandler(file_handler_debug)
 logger.addHandler(stream_handler)
 
 #################################################
