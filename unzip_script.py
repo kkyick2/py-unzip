@@ -1,6 +1,8 @@
 import sys,os,re,zipfile,time
 from datetime import datetime
-# kkyick2, 20230707, for hkstp
+import pandas as pd
+import xlsxwriter
+# kkyick2, 20230920, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
 # method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
@@ -60,13 +62,13 @@ DATE = datetime.now().strftime("%Y%m%d")
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Create Handlers(Filehandler with filename| StramHandler with stdout)
-file_handler_info = logging.FileHandler(os.path.join(script_dir, 'unzip_script_info_'+DATE+'.log'))
-file_handler_debug = logging.FileHandler(os.path.join(script_dir, 'unzip_script_debug_'+DATE+'.log'))
+file_handler_info = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_info_'+DATE+'.log'))
+# file_handler_debug = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_debug_'+DATE+'.log'))
 stream_handler = logging.StreamHandler(sys.stdout)
 
 # Set Additional log level in Handlers if needed
 file_handler_info.setLevel(logging.INFO)
-file_handler_debug.setLevel(logging.DEBUG)
+# file_handler_debug.setLevel(logging.DEBUG)
 stream_handler.setLevel(logging.WARNING)
 
 # Create Formatter and Associate with Handlers
@@ -75,12 +77,12 @@ tz = time.strftime('%z')
 formatter = logging.Formatter(
     '%(asctime)s ' + tz + ' - %(name)s - %(levelname)s - %(message)s')
 file_handler_info.setFormatter(formatter)
-file_handler_debug.setFormatter(formatter)
+# file_handler_debug.setFormatter(formatter)
 stream_handler.setFormatter(formatter)
 
 # Add Handlers to logger
 logger.addHandler(file_handler_info)
-logger.addHandler(file_handler_debug)
+# logger.addHandler(file_handler_debug)
 logger.addHandler(stream_handler)
 
 #################################################
@@ -114,6 +116,8 @@ def unzip_n_delete(dir):
     return
 
 def rename_csv(dir):
+    # remane csv and convent csv to xlsx
+    
     os.chdir(dir) # change directory from working dir to dir with files
     print(f'### Script to rename csv in dir: {dir}')
     logger.info(f'### Script to rename csv in dir: {dir}')
@@ -124,16 +128,25 @@ def rename_csv(dir):
             logger.debug(f'processing file: {f}')
 
             if re.match(pattern, f):
+                # rename csv
                 print(f' found match: {f}')
                 logger.info(f' found match: {f}')
                 fn = f.split("-")
-                f_newname = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'.csv'
-                if os.path.exists(f_newname) == True:
+                f_newname_csv = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'.csv'
+                f_newname_xlsx = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'.xlsx'
+                if os.path.exists(f_newname_csv) == True:
                     os.remove(f)
-                    logger.info(f' found duplicate filename, deleted old file: {f_newname}')
-                print(f' rename to: {f_newname}')
-                logger.info(f' rename to: {f_newname}')
-                os.rename(f, f_newname)
+                    logger.info(f' found duplicate filename, deleted old file: {f_newname_csv}')
+                print(f' rename to: {f_newname_csv}')
+                logger.info(f' rename to: {f_newname_csv}')
+                os.rename(f, f_newname_csv)
+
+                # convent csv to excel
+                df = pd.read_csv(f_newname_csv)
+                df.to_excel(f_newname_xlsx, index=False)
+                print(f' convent from csv to xlsx: {f_newname_xlsx}')
+                logger.info(f' convent from csv to xlsx: {f_newname_xlsx}')
+
             else:
                 print(f' Not match, skip: {f}')
                 logger.info(f' Not match, skip: {f}')
