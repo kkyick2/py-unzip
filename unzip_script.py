@@ -2,7 +2,8 @@ import sys,os,re,zipfile,time
 from datetime import datetime
 import pandas as pd
 import xlsxwriter
-# kkyick2, 20230928, for hkstp
+import logging
+# kkyick2, 20230929, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
 # method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
@@ -52,40 +53,33 @@ import xlsxwriter
 #  *: Run the command every day of the month
 #  *: Run the command every month
 #  *: Run the command every day of the week
+#################################################
+# global var
+#################################################
+DATE = datetime.now().strftime("%Y%m%d")
+LOG_FILE_LEVEL = logging.INFO
 
 #################################################
 # code for logging
 #################################################
 # Import Logging
-import logging
 logger = logging.getLogger("unzip_script")
-logger.setLevel(logging.DEBUG)
-
-DATE = datetime.now().strftime("%Y%m%d")
+logger.setLevel(logging.DEBUG) # define the lowest-severity log message a logger will handle
 script_dir = os.path.dirname(os.path.realpath(__file__))
-
 # Create Handlers(Filehandler with filename| StramHandler with stdout)
-file_handler_info = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_info_'+ DATE +'.log'))
-# file_handler_debug = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_debug_'+DATE+'.log'))
+file_handler = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_' + DATE + '.log'))
 stream_handler = logging.StreamHandler(sys.stdout)
-
 # Set Additional log level in Handlers if needed
-file_handler_info.setLevel(logging.INFO)
-# file_handler_debug.setLevel(logging.DEBUG)
+file_handler.setLevel(LOG_FILE_LEVEL)
 stream_handler.setLevel(logging.WARNING)
-
 # Create Formatter and Associate with Handlers
 tz = time.strftime('%z')
-
 formatter = logging.Formatter(
     '%(asctime)s ' + tz + ' - %(name)s - %(levelname)s - %(message)s')
-file_handler_info.setFormatter(formatter)
-# file_handler_debug.setFormatter(formatter)
+file_handler.setFormatter(formatter)
 stream_handler.setFormatter(formatter)
-
 # Add Handlers to logger
-logger.addHandler(file_handler_info)
-# logger.addHandler(file_handler_debug)
+logger.addHandler(file_handler)
 logger.addHandler(stream_handler)
 
 #################################################
@@ -171,7 +165,7 @@ def convent_csv_xlsx(f_csv):
         df = pd.read_csv(f_csv)
     except pd.errors.EmptyDataError:
         print(f' Empty csv')
-        logger.info(f' Empty csv')
+        logger.warning(f' Empty csv')
         df = pd.DataFrame() #create a empty dataframe
 
     df.to_excel(f_xlsx, index=False)
