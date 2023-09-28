@@ -2,7 +2,7 @@ import sys,os,re,zipfile,time
 from datetime import datetime
 import pandas as pd
 import xlsxwriter
-# kkyick2, 20230920, for hkstp
+# kkyick2, 20230928, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
 # method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
@@ -12,32 +12,35 @@ import xlsxwriter
 # Before:
 # report_dir
 # |--- T001
-#      |--- DNS Security Report-2023-02-14-1704_1915.zip
-#      |--- IPS Report-2023-02-14-1704_1915.zip
-#      |--- Web Usage Summary Report-2023-02-14-1704_1915.zip
+#      |--- T001-DNS-2023-02-14-1704_1915.zip
+#      |--- T001-IPS-2023-02-14-1704_1915.zip
+#      |--- T001-WEB-2023-02-14-1704_1915.zip
 # |--- T002
-#      |--- DNS Security Report-2023-02-14-1704_1915.zip
-#      |--- IPS Report-2023-02-14-1704_1915.zip
-#      |--- Web Usage Summary Report-2023-02-14-1704_1915.zip
-# |--- T003
-#      |--- DNS Security Report-2023-02-14-1704_1915.zip
-#      |--- IPS Report-2023-02-14-1704_1915.zip
-#      |--- Web Usage Summary Report-2023-02-14-1704_1915.zip
+#      |--- T001-DNS-2023-02-14-1704_1915.zip
+#      |--- T002-IPS-2023-02-14-1704_1915.zip
+#      |--- T003-WEB-2023-02-14-1704_1915.zip
 #
 # After:
 # report_dir
 # |--- T001
-#      |--- DNS Security Report-2023-02-14.csv
-#      |--- IPS Report-2023-02-14-1704.csv
-#      |--- Web Usage Summary Report-2023-02-14.csv
+#      |--- DNS_2023-02-14.csv
+#      |--- IPS_2023-02-14.csv
+#      |--- WEB_2023-02-14.csv
 # |--- T002
-#      |--- DNS Security Report-2023-02-14.csv
-#      |--- IPS Report-2023-02-14-1704.csv
-#      |--- Web Usage Summary Report-2023-02-14.csv
-# |--- T003
-#      |--- DNS Security Report-2023-02-14.csv
-#      |--- IPS Report-2023-02-14-1704.csv
-#      |--- Web Usage Summary Report-2023-02-14.csv
+#      |--- DNS_2023-02-14.csv
+#      |--- IPS_2023-02-14.csv
+#      |--- WEB_2023-02-14.csv
+#
+# Convent the csv to xlsx
+# report_dir
+# |--- T001
+#      |--- DNS_2023-02-14.xlsx
+#      |--- IPS_2023-02-14.xlsx
+#      |--- WEB_2023-02-14.xlsx
+# |--- T002
+#      |--- DNS_2023-02-14.xlsx
+#      |--- IPS_2023-02-14.xlsx
+#      |--- WEB_2023-02-14.xlsx
 #
 # === crontab -e example===
 # To create a cron job that executes a script every 15 minutes between 12:00am to 6:00am:
@@ -62,7 +65,7 @@ DATE = datetime.now().strftime("%Y%m%d")
 script_dir = os.path.dirname(os.path.realpath(__file__))
 
 # Create Handlers(Filehandler with filename| StramHandler with stdout)
-file_handler_info = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_info_'+DATE+'.log'))
+file_handler_info = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_info_'+ DATE +'.log'))
 # file_handler_debug = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_debug_'+DATE+'.log'))
 stream_handler = logging.StreamHandler(sys.stdout)
 
@@ -90,12 +93,14 @@ logger.addHandler(stream_handler)
 #################################################
 
 def unzip_n_delete(dir):
+    # Function to unzip and del the zip
+
     os.chdir(dir) # change directory from working dir to dir with files
     print(f'### Script to unzip and delete zip in dir: {dir}')
     logger.info(f'### Script to unzip and delete zip in dir: {dir}')
     try:
         for f in os.listdir(dir): # loop through items in dir
-            pattern = r"^(.*?)\sReport-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
+            pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
             print(f'processing file: {f}')
             logger.debug(f'processing file: {f}')
 
@@ -116,14 +121,15 @@ def unzip_n_delete(dir):
     return
 
 def rename_csv(dir):
-    # remane csv and convent csv to xlsx
+    # Function to remane csv
     
     os.chdir(dir) # change directory from working dir to dir with files
     print(f'### Script to rename csv in dir: {dir}')
     logger.info(f'### Script to rename csv in dir: {dir}')
     try:
+        print(os.listdir(dir))
         for f in os.listdir(dir):
-            pattern = r"^(.*?)\sReport-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
+            pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
             print(f'processing file: {f}')
             logger.debug(f'processing file: {f}')
 
@@ -131,9 +137,10 @@ def rename_csv(dir):
                 # rename csv
                 print(f' found match: {f}')
                 logger.info(f' found match: {f}')
-                fn = f.split("-")
-                f_newname_csv = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'.csv'
-                f_newname_xlsx = fn[0]+'-'+fn[1]+'-'+fn[2]+'-'+fn[3]+'.xlsx'
+                fn = f.split("-") 
+                # ['T001', 'IPS', '2023', '09', '22', '0000_6896.csv']
+                #   f[0]    f[1]   f[2]   f[3]  f[4]
+                f_newname_csv = fn[1]+'_'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.csv'
                 if os.path.exists(f_newname_csv) == True:
                     os.remove(f)
                     logger.info(f' found duplicate filename, deleted old file: {f_newname_csv}')
@@ -141,18 +148,37 @@ def rename_csv(dir):
                 logger.info(f' rename to: {f_newname_csv}')
                 os.rename(f, f_newname_csv)
 
-                # convent csv to excel
-                df = pd.read_csv(f_newname_csv)
-                df.to_excel(f_newname_xlsx, index=False)
-                print(f' convent from csv to xlsx: {f_newname_xlsx}')
-                logger.info(f' convent from csv to xlsx: {f_newname_xlsx}')
+                # convent csv to xlsx
+                convent_csv_xlsx(f_newname_csv)
 
             else:
                 print(f' Not match, skip: {f}')
                 logger.info(f' Not match, skip: {f}')
+
     except Exception:
         pass
     return
+
+
+def convent_csv_xlsx(f_csv):
+    # Function to convent csv to xlsx
+    print(f'### Script to convent csv to xlsx: {f_csv}')
+    logger.info(f'### Script to convent csv to xlsx: {f_csv}')
+
+    f_xlsx = f_csv[:-4] + '.xlsx'
+
+    try:
+        df = pd.read_csv(f_csv)
+    except pd.errors.EmptyDataError:
+        print(f' Empty csv')
+        logger.info(f' Empty csv')
+        df = pd.DataFrame() #create a empty dataframe
+
+    df.to_excel(f_xlsx, index=False)
+    print(f' convent from csv to xlsx: {f_xlsx}')
+    logger.info(f' convent from csv to xlsx: {f_xlsx}')
+    return
+
 
 def process_input_dir(dir):
     # child dir for processing, pattern is T001, T002, T003 ...etc
@@ -166,8 +192,9 @@ def process_input_dir(dir):
         if re.match(pattern, f):
             print(f' found match: {f}')
             logger.info(f' found match: {f}')
-            # unzip and rename function
+            # unzip
             unzip_n_delete(os.path.join(dir, f))
+            # rename and convent to csv
             rename_csv(os.path.join(dir, f))
         else:
             logger.info(f' Not match, skip: {f}')
