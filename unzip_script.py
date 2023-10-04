@@ -58,20 +58,22 @@ import logging
 #################################################
 DATE = datetime.now().strftime("%Y%m%d")
 LOG_FILE_LEVEL = logging.INFO
+LOG_CONSOLE_LEVEL = logging.WARNING
+LOG_LOWEST_LEVEL = logging.DEBUG
 
 #################################################
 # code for logging
 #################################################
 # Import Logging
 logger = logging.getLogger("unzip_script")
-logger.setLevel(logging.DEBUG) # define the lowest-severity log message a logger will handle
+logger.setLevel(LOG_LOWEST_LEVEL) # define the lowest-severity log message a logger will handle
 script_dir = os.path.dirname(os.path.realpath(__file__))
 # Create Handlers(Filehandler with filename| StramHandler with stdout)
 file_handler = logging.FileHandler(os.path.join(script_dir, 'log', 'unzip_script_' + DATE + '.log'))
 stream_handler = logging.StreamHandler(sys.stdout)
 # Set Additional log level in Handlers if needed
 file_handler.setLevel(LOG_FILE_LEVEL)
-stream_handler.setLevel(logging.WARNING)
+stream_handler.setLevel(LOG_CONSOLE_LEVEL)
 # Create Formatter and Associate with Handlers
 tz = time.strftime('%z')
 formatter = logging.Formatter(
