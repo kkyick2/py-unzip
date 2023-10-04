@@ -3,7 +3,7 @@ from datetime import datetime
 import pandas as pd
 import xlsxwriter
 import logging
-# kkyick2, 20230929, for hkstp
+# kkyick2, 20231004, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
 # method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
@@ -162,15 +162,30 @@ def convent_csv_xlsx(f_csv):
     f_xlsx = f_csv[:-4] + '.xlsx'
 
     try:
-        df = pd.read_csv(f_csv)
+        # read csv
+        print(f' read csv')
+        logger.info(f' read csv')
+        df = pd.read_csv(f_csv, on_bad_lines='skip')
     except pd.errors.EmptyDataError:
-        print(f' Empty csv')
-        logger.warning(f' Empty csv')
+        # handle empty csv file
+        print(f' Empty csv!!!')
+        logger.warning(f' Empty csv!!!')
         df = pd.DataFrame() #create a empty dataframe
 
+    # convent csv to xlsx
     df.to_excel(f_xlsx, index=False)
     print(f' convent from csv to xlsx: {f_xlsx}')
     logger.info(f' convent from csv to xlsx: {f_xlsx}')
+
+    # remove csv after convent to xlsx
+    if(os.path.isfile(f_xlsx)):
+        print(f' Found xlsx {f_xlsx} and remove csv')
+        logger.info(f' Found xlsx {f_xlsx} and remove csv')
+        os.remove(f_csv) 
+    else:
+        print(f' convent fail!!! xlsx file not found!!!')
+        logger.warning(f'convent fail!!! xlsx file not found!!!')
+
     return
 
 
