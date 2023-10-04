@@ -186,7 +186,7 @@ def convent_csv_xlsx(f_csv):
         os.remove(f_csv) 
     else:
         print(f' convent fail!!! xlsx file not found!!!')
-        logger.warning(f'convent fail!!! xlsx file not found!!!')
+        logger.warning(f' convent fail!!! xlsx file not found!!!')
 
     return
 
