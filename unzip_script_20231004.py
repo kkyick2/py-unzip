@@ -1,8 +1,9 @@
-import sys,os,re,zipfile,time,csv
+import sys,os,re,zipfile,time
 from datetime import datetime
-from xlsxwriter.workbook import Workbook
+import pandas as pd
+import xlsxwriter
 import logging
-version = '20231012'
+version = '20231004'
 # kkyick2, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
@@ -57,9 +58,10 @@ version = '20231012'
 # global var
 #################################################
 DATE = datetime.now().strftime("%Y%m%d")
-LOG_FILE_LEVEL = logging.INFO # set log file level
-LOG_CONSOLE_LEVEL = logging.WARNING # set log console level
-LOG_LOWEST_LEVEL = logging.DEBUG # set lowest log level
+LOG_FILE_LEVEL = logging.INFO
+LOG_CONSOLE_LEVEL = logging.WARNING
+LOG_LOWEST_LEVEL = logging.DEBUG
+
 #################################################
 # code for logging
 #################################################
@@ -149,6 +151,7 @@ def rename_csv(dir):
             else:
                 print(f' Not match, skip: {f}')
                 logger.info(f' Not match, skip: {f}')
+
     except Exception:
         pass
     return
@@ -159,21 +162,23 @@ def convent_csv_xlsx(f_csv):
     print(f'### Script to convent csv to xlsx: {f_csv}')
     logger.info(f'### Script to convent csv to xlsx: {f_csv}')
 
+    f_xlsx = f_csv[:-4] + '.xlsx'
+
     try:
-        f_xlsx = f_csv[:-4] + '.xlsx'
-        excel_obj = Workbook(f_csv[:-4] + '.xlsx')
-        worksheet = excel_obj.add_worksheet()
         # read csv
-        with open(f_csv, 'rt', encoding='utf8') as f:
-            reader = csv.reader(f)
-            for r, row in enumerate(reader):
-                for c, col in enumerate(row):
-                    worksheet.write(r, c, col)
-        excel_obj.close()
-        print(f' convent from csv to xlsx: {f_xlsx}')
-        logger.info(f' convent from csv to xlsx: {f_xlsx}')
-    except Exception:
-        pass
+        print(f' read csv')
+        logger.info(f' read csv')
+        df = pd.read_csv(f_csv, on_bad_lines='skip')
+    except pd.errors.EmptyDataError:
+        # handle empty csv file
+        print(f' Empty csv!!!')
+        logger.warning(f' Empty csv!!!')
+        df = pd.DataFrame() #create a empty dataframe
+
+    # convent csv to xlsx
+    df.to_excel(f_xlsx, index=False)
+    print(f' convent from csv to xlsx: {f_xlsx}')
+    logger.info(f' convent from csv to xlsx: {f_xlsx}')
 
     # remove csv after convent to xlsx
     if(os.path.isfile(f_xlsx)):
@@ -183,6 +188,7 @@ def convent_csv_xlsx(f_csv):
     else:
         print(f' convent fail!!! xlsx file not found!!!')
         logger.warning(f' convent fail!!! xlsx file not found!!!')
+
     return
 
 
@@ -198,9 +204,9 @@ def process_input_dir(dir):
         if re.match(pattern, f):
             print(f' found match: {f}')
             logger.info(f' found match: {f}')
-            # step1: unzip
+            # unzip
             unzip_n_delete(os.path.join(dir, f))
-            # step2: rename and convent to csv
+            # rename and convent to csv
             rename_csv(os.path.join(dir, f))
         else:
             logger.info(f' Not match, skip: {f}')
