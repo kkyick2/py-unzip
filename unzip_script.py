@@ -91,73 +91,80 @@ def unzip_n_delete(dir):
     # Function to unzip and del the zip
 
     os.chdir(dir) # change directory from working dir to dir with files
-    print(f'### Script to unzip and delete zip in dir: {dir}')
-    logger.info(f'### Script to unzip and delete zip in dir: {dir}')
-    try:
-        for f in os.listdir(dir): # loop through items in dir
-            pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
-            print(f'processing file: {f}')
-            logger.debug(f'processing file: {f}')
+    print(f'### Step1 - Script to unzip and delete zip in dir: {dir}')
+    logger.info(f'### Step1 - Script to unzip and delete zip in dir: {dir}')
+    if len(os.listdir(dir)) == 0:
+        print(f' Empty dir, skip')
+        logger.info(f' Empty dir, skip')
+    else:
+        try:
+            for f in os.listdir(dir): # loop through items in dir
+                pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
+                print(f' processing file: {f}')
+                logger.debug(f' processing file: {f}')
 
-            if re.match(pattern, f):
-                print(f' unzip file: {f}')
-                logger.info(f' unzip file: {f}')
+                if re.match(pattern, f):
+                    print(f' unzip file: {f}')
+                    logger.info(f' unzip file: {f}')
 
-                fpath = os.path.abspath(f) # get full path
-                zip_ref = zipfile.ZipFile(fpath) # create zipfile object
-                zip_ref.extractall(dir) # extract
-                zip_ref.close() # close
-                os.remove(fpath) # delete zipped file
-            else:
-                print(f' Not match, skip: {f}')
-                logger.info(f' Not match, skip: {f}')
-    except Exception:
-        pass
+                    fpath = os.path.abspath(f) # get full path
+                    zip_ref = zipfile.ZipFile(fpath) # create zipfile object
+                    zip_ref.extractall(dir) # extract
+                    zip_ref.close() # close
+                    os.remove(fpath) # delete zipped file
+                else:
+                    print(f' Not match, skip: {f}')
+                    logger.info(f' Not match, skip: {f}')
+        except Exception:
+            pass
     return
 
 def rename_csv(dir):
     # Function to remane csv
     
     os.chdir(dir) # change directory from working dir to dir with files
-    print(f'### Script to rename csv in dir: {dir}')
-    logger.info(f'### Script to rename csv in dir: {dir}')
-    try:
-        print(os.listdir(dir))
-        for f in os.listdir(dir):
-            pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
-            print(f'processing file: {f}')
-            logger.debug(f'processing file: {f}')
+    print(f'### Step2 - Script to rename csv in dir: {dir}')
+    logger.info(f'### Step2 - Script to rename csv in dir: {dir}')
+    if len(os.listdir(dir)) == 0:
+        print(f' Empty dir, skip:')
+        logger.info(f' Empty dir, skip:')
+    else:
+        try:
+            for f in os.listdir(dir):
+                pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
+                print(f' Processing file: {f}')
+                logger.debug(f' Processing file: {f}')
 
-            if re.match(pattern, f):
-                # rename csv
-                print(f' found match: {f}')
-                logger.info(f' found match: {f}')
-                fn = f.split("-") 
-                # ['T001', 'IPS', '2023', '09', '22', '0000_6896.csv']
-                #   f[0]    f[1]   f[2]   f[3]  f[4]
-                f_newname_csv = fn[1]+'_'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.csv'
-                if os.path.exists(f_newname_csv) == True:
-                    os.remove(f)
-                    logger.info(f' found duplicate filename, deleted old file: {f_newname_csv}')
-                print(f' rename to: {f_newname_csv}')
-                logger.info(f' rename to: {f_newname_csv}')
-                os.rename(f, f_newname_csv)
+                if re.match(pattern, f):
+                    # rename csv
+                    print(f' Found match: {f}')
+                    logger.info(f' Found match: {f}')
+                    fn = f.split("-") 
+                    # ['T001', 'IPS', '2023', '09', '22', '0000_6896.csv']
+                    #   f[0]    f[1]   f[2]   f[3]  f[4]
+                    f_newname_csv = fn[1]+'_'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.csv'
+                    if os.path.exists(f_newname_csv) == True:
+                        os.remove(f)
+                        logger.info(f' Found duplicate filename, deleted old file: {f_newname_csv}')
+                    print(f' Rename to: {f_newname_csv}')
+                    logger.info(f' Rename to: {f_newname_csv}')
+                    os.rename(f, f_newname_csv)
 
-                # convent csv to xlsx
-                convent_csv_xlsx(f_newname_csv)
+                    # convent csv to xlsx
+                    convent_csv_xlsx(f_newname_csv)
 
-            else:
-                print(f' Not match, skip: {f}')
-                logger.info(f' Not match, skip: {f}')
-    except Exception:
-        pass
+                else:
+                    print(f' Not match, skip: {f}')
+                    logger.info(f' Not match, skip: {f}')
+        except Exception:
+            pass
     return
 
 
 def convent_csv_xlsx(f_csv):
     # Function to convent csv to xlsx
-    print(f'### Script to convent csv to xlsx: {f_csv}')
-    logger.info(f'### Script to convent csv to xlsx: {f_csv}')
+    print(f'### Step3 - Script to convent csv to xlsx: {f_csv}')
+    logger.info(f'### Step3 - Script to convent csv to xlsx: {f_csv}')
 
     try:
         f_xlsx = f_csv[:-4] + '.xlsx'
@@ -170,8 +177,8 @@ def convent_csv_xlsx(f_csv):
                 for c, col in enumerate(row):
                     worksheet.write(r, c, col)
         excel_obj.close()
-        print(f' convent from csv to xlsx: {f_xlsx}')
-        logger.info(f' convent from csv to xlsx: {f_xlsx}')
+        print(f' Convent from csv to xlsx: {f_xlsx}')
+        logger.info(f' Convent from csv to xlsx: {f_xlsx}')
     except Exception:
         pass
 
@@ -181,8 +188,8 @@ def convent_csv_xlsx(f_csv):
         logger.info(f' Found xlsx {f_xlsx} and remove csv')
         os.remove(f_csv) 
     else:
-        print(f' convent fail!!! xlsx file not found!!!')
-        logger.warning(f' convent fail!!! xlsx file not found!!!')
+        print(f' Convent fail!!! xlsx file not found!!!')
+        logger.warning(f' Convent fail!!! xlsx file not found!!!')
     return
 
 
@@ -192,16 +199,20 @@ def process_input_dir(dir):
 
     for f in os.listdir(dir):
         print('#'*50)
-        print(f'###### START PROCESSING PATH: {dir}/{f}')
-        logger.info(f'###### START PROCESSING PATH: {dir}/{f}')
+        print(f'###### Step0 - START PROCESSING PATH: {dir}/{f}')
+        logger.info('#'*50)
+        logger.info(f'###### Step0 - START PROCESSING PATH: {dir}/{f}')
 
         if re.match(pattern, f):
-            print(f' found match: {f}')
-            logger.info(f' found match: {f}')
-            # step1: unzip
+            print(f' Found match: {f}')
+            logger.info(f' Found match: {f}')
+
+            # step1: unzip and delete
             unzip_n_delete(os.path.join(dir, f))
-            # step2: rename and convent to csv
+
+            # step2: rename and convent to xlsx, del csv afterward
             rename_csv(os.path.join(dir, f))
+
         else:
             logger.info(f' Not match, skip: {f}')
             print(f' Not match, skip: {f}')
@@ -218,13 +229,19 @@ if __name__ == "__main__":
     # dir = '/home/col/projects/python/py-unzip/report_dir'
 
     print(f'###')
-    logger.info(f'###')
     print(f'###')
     logger.info(f'###')
-    print(f'############### START SCRIPT TO SEARCH Txxx in: {dir} ############')
-    logger.info(f'############ START SCRIPT TO SEARCH Txxx in: {dir} ############')
+    logger.info(f'###')
+    print(f'############################################################## ')
+    print(f'##################       START SCRIPT       ################## ')
+    print(f'### Search FAZ report csv in each folder, pattern is Txx in directory: {dir}')
+    logger.info(f'############################################################## ')
+    logger.info(f'##################       START SCRIPT       ################## ')
+    logger.info(f'### Search FAZ report csv in each folder, pattern is Txx in directory: {dir}')
 
     process_input_dir(dir)
 
-    print(f'############    END SCRIPT    ############ ')
-    logger.info(f'############    END SCRIPT    ############ ')
+    print(f'###############       END SCRIPT       ############### ')
+    print(f'###################################################### ')
+    logger.info(f'###############       END SCRIPT       ############### ')
+    logger.info(f'###################################################### ')
