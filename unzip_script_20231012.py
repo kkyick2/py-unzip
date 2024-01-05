@@ -1,8 +1,8 @@
 import sys,os,re,zipfile,time,csv
 from datetime import datetime
-from openpyxl import Workbook
+from xlsxwriter.workbook import Workbook
 import logging
-version = '20240105'
+version = '20231012'
 # kkyick2, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
@@ -166,20 +166,22 @@ def convent_csv_xlsx(f_csv):
     print(f'### Step3 - Script to convent csv to xlsx: {f_csv}')
     logger.info(f'### Step3 - Script to convent csv to xlsx: {f_csv}')
 
-
     try:
         f_xlsx = f_csv[:-4] + '.xlsx'
-        wb = Workbook()
-        ws = wb.active
-        with open(f_csv, 'r') as f:
-            for row in csv.reader(f):
-                ws.append(row)
-        wb.save(f_xlsx)
+        excel_obj = Workbook(f_csv[:-4] + '.xlsx')
+        worksheet = excel_obj.add_worksheet()
+        # read csv
+        with open(f_csv, 'rt', encoding='utf8') as f:
+            reader = csv.reader(f)
+            for r, row in enumerate(reader):
+                for c, col in enumerate(row):
+                    worksheet.write(r, c, col)
+        excel_obj.close()
         print(f' Convent from csv to xlsx: {f_xlsx}')
         logger.info(f' Convent from csv to xlsx: {f_xlsx}')
     except Exception:
-        print(f' Error exception: {Exception}')
         pass
+
     # remove csv after convent to xlsx
     if(os.path.isfile(f_xlsx)):
         print(f' Found xlsx {f_xlsx} and remove csv')
