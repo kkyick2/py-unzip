@@ -2,7 +2,7 @@ import sys,os,re,zipfile,time,csv
 from datetime import datetime
 from openpyxl import Workbook
 import logging
-version = '20240122'
+version = '20240105'
 # kkyick2, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
@@ -150,10 +150,6 @@ def rename_csv(dir):
                     logger.info(f' Rename to: {f_newname_csv}')
                     os.rename(f, f_newname_csv)
 
-                    # handle web report with "0 " or "-nan" cell
-                    if fn[1] == 'WEB':
-                        modify_web_csv(f_newname_csv)
-
                     # convent csv to xlsx
                     convent_csv_xlsx(f_newname_csv)
 
@@ -162,75 +158,6 @@ def rename_csv(dir):
                     logger.info(f' Not match, skip: {f}')
         except Exception:
             pass
-    return
-
-def modify_web_csv(f_csv):
-    # Function to modify web report csv
-    # fix middleware java program handle csv with error when cell have value "0 " and "-nan "
-    # Example of first 4 rows of web report
-    #
-    #"###Total Requests###"
-    #"Type","Requests","% of Total"
-    #"Allowed","0 ","-nan "
-    #"Blocked","0 ","-nan "
-    #
-    print(f'### Step2.1 - Script to modify web report csv: {f_csv}')
-    logger.info(f'### Step2.1 - Script to modify web report csv: {f_csv}')
-
-    fn = f_csv.split(".")
-    f_csv_a = fn[0] + 'a.csv'
-
-    # modify the web report csv
-    with open(f_csv, "r") as inf:
-        reader = csv.reader(inf)
-        rows = list(reader)
-        pattern1 = ['###Total Requests###']
-        pattern2 = ['Allowed','Blocked']
-
-        # row0 if match "###Total Requests###"
-        if(rows[0][0] in pattern1):
-            print(f' Reading row0 matched pattern1: {rows[0]}')
-            logger.info(f' Reading row0 matched pattern1: {rows[0]}')
-        
-            # row2 "Allowed","0 ","-nan "
-            print(f' Reading row2: {rows[2]}')
-            logger.info(f' Reading row2: {rows[2]}')
-            if(rows[2][0] in pattern2):
-                rows[2][1] = rows[2][1].strip() # "0 " to "0"
-                if(rows[2][2] == '-nan '):
-                    rows[2][2] = '0'
-            print(f' Edited row2: {rows[2]}')
-            logger.info(f' Edited row2: {rows[2]}')
-
-            # row3 "Blocked","0 ","-nan "
-            print(f' Reading row3: {rows[3]}')
-            logger.info(f' Reading row3: {rows[3]}')
-            if(rows[3][0] in pattern2):
-                rows[3][1] = rows[3][1].strip()
-                if(rows[3][2] == '-nan '):
-                    rows[3][2] = '0'
-            print(f' Edited row3: {rows[3]}')
-            logger.info(f' Edited row3: {rows[3]}')
-
-            # Write new csv file
-            with open(f_csv_a, "w", newline="") as outf:
-                writer = csv.writer(outf)
-                writer.writerows(rows)
-
-            # WEB_2023-09-27.csv   <-- old, del this file
-            # WEB_2023-09-27a.csv  <-- new, rename to WEB_2023-09-27.csv
-            if os.path.exists(f_csv) == True:
-                print(f' Delete old csv file: {f_csv}')
-                logger.info(f' Delete old csv file: {f_csv}')
-                os.remove(f_csv)
-                print(f' Rename new csv {f_csv_a} to: {f_csv}')
-                logger.info(f' Rename new csv {f_csv_a} to: {f_csv}')
-                os.rename(f_csv_a, f_csv)
-        # row0 if NOT match "###Total Requests###", skip
-        else:
-            print(f' skip when reading row0 NOT matched pattern1: {rows[0]}')
-            logger.info(f' skip when reading row0 NOT matched pattern1: {rows[0]}')            
-
     return
 
 

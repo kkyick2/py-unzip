@@ -73,3 +73,4 @@ To create a cron job that executes a script every 15 minutes between 12:00am to 
 | 20231004 | 2023-1004 | use pandas to convent csv to xls |
 | 20231012 | 2023-1012 | use xlswriter to convent csv to xls |
 | 20240105 | 2024-0105 | use openpyxl to convent csv to xls |
+| 20240122 | 2024-0122 | handle web report cell -nan value |
