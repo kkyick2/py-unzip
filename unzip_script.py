@@ -150,7 +150,7 @@ def rename_csv(dir):
                     logger.info(f' Rename to: {f_newname_csv}')
                     os.rename(f, f_newname_csv)
 
-                    # handle web report with "0 " or "-nan" cell
+                    # step2.1: handle web report with "0 " or "-nan" cell
                     if fn[1] == 'WEB':
                         modify_web_csv(f_newname_csv)
 
@@ -161,6 +161,8 @@ def rename_csv(dir):
                     print(f' Not match, skip: {f}')
                     logger.info(f' Not match, skip: {f}')
         except Exception:
+            print(f' Error exception: {Exception}')
+            logger.info(f' Error exception: {Exception}')
             pass
     return
 
@@ -252,6 +254,7 @@ def convent_csv_xlsx(f_csv):
         logger.info(f' Convent from csv to xlsx: {f_xlsx}')
     except Exception:
         print(f' Error exception: {Exception}')
+        logger.info(f' Error exception: {Exception}')
         pass
     # remove csv after convent to xlsx
     if(os.path.isfile(f_xlsx)):
