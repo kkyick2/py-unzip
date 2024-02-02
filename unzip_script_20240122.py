@@ -1,9 +1,8 @@
 import sys,os,re,zipfile,time,csv
 from datetime import datetime
 from openpyxl import Workbook
-import pandas as pd
 import logging
-version = '20240202'
+version = '20240122'
 # kkyick2, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
@@ -77,7 +76,7 @@ stream_handler.setLevel(LOG_CONSOLE_LEVEL)
 # Create Formatter and Associate with Handlers
 tz = time.strftime('%z')
 formatter = logging.Formatter(
-    '%(asctime)s ' + tz + ': %(name)s: %(process)d.%(thread)d: %(funcName)-18s: %(levelname)-8s: %(message)s')
+    '%(asctime)s ' + tz + ' - %(name)s - %(levelname)s - %(message)s')
 file_handler.setFormatter(formatter)
 stream_handler.setFormatter(formatter)
 # Add Handlers to logger
@@ -100,7 +99,7 @@ def unzip_n_delete(dir):
     else:
         try:
             for f in os.listdir(dir): # loop through items in dir
-                pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d*_\d*\.zip"
+                pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip"
                 print(f' processing file: {f}')
                 logger.debug(f' processing file: {f}')
 
@@ -132,7 +131,7 @@ def rename_csv(dir):
     else:
         try:
             for f in os.listdir(dir):
-                pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d*_\d*\.csv"
+                pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.csv"
                 print(f' Processing file: {f}')
                 logger.debug(f' Processing file: {f}')
 
@@ -144,7 +143,6 @@ def rename_csv(dir):
                     # ['T001', 'IPS', '2023', '09', '22', '0000_6896.csv']
                     #   f[0]    f[1]   f[2]   f[3]  f[4]
                     f_newname_csv = fn[1]+'_'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.csv'
-                    f_newname_xlsx = fn[1]+'_'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.xlsx'
                     if os.path.exists(f_newname_csv) == True:
                         os.remove(f)
                         logger.info(f' Found duplicate filename, deleted old file: {f_newname_csv}')
@@ -152,29 +150,13 @@ def rename_csv(dir):
                     logger.info(f' Rename to: {f_newname_csv}')
                     os.rename(f, f_newname_csv)
 
-                    
-                    print(f'### step2.0: checking {f_newname_csv} is empty csv?')
-                    logger.info(f'### step2.0: checking {f_newname_csv} is empty csv?')
-                    # step2A: if csv empty, create empty excel
-                    if os.stat(f_newname_csv).st_size == 0:  
-                        print(f' Empty csv, create empty xlsx')
-                        logger.info(f' Empty csv, create empty xlsx')
-                        df = pd.DataFrame() #create a empty dataframe
-                        df.to_excel(f_newname_xlsx, index=False)
+                    # step2.1: handle web report with "0 " or "-nan" cell
+                    if fn[1] == 'WEB':
+                        modify_web_csv(f_newname_csv)
 
-                        print(f' Delete old csv file: {f_newname_csv}')
-                        logger.info(f' Delete old csv file: {f_newname_csv}')
-                        os.remove(f_newname_csv)
-                    # step2B: if csv not empty
-                    else:
-                        print(f' Not empty csv, process next step')
-                        logger.info(f' Not empty csv, process next step')
-                        # step2B1: handle web report with "0 " or "-nan" cell
-                        if fn[1] == 'WEB':
-                            modify_web_csv(f_newname_csv)
-                        # step2B2: convent non empty csv to xlsx
-                        convent_csv_xlsx(f_newname_csv)
-                    
+                    # convent csv to xlsx
+                    convent_csv_xlsx(f_newname_csv)
+
                 else:
                     print(f' Not match, skip: {f}')
                     logger.info(f' Not match, skip: {f}')
@@ -194,8 +176,8 @@ def modify_web_csv(f_csv):
     #"Allowed","0 ","-nan "
     #"Blocked","0 ","-nan "
     #
-    print(f'### Step2B1 - Script to modify web report csv: {f_csv}')
-    logger.info(f'### Step2B1 - Script to modify web report csv: {f_csv}')
+    print(f'### Step2.1 - Script to modify web report csv: {f_csv}')
+    logger.info(f'### Step2.1 - Script to modify web report csv: {f_csv}')
 
     fn = f_csv.split(".")
     f_csv_a = fn[0] + 'a.csv'
@@ -256,8 +238,8 @@ def modify_web_csv(f_csv):
 
 def convent_csv_xlsx(f_csv):
     # Function to convent csv to xlsx
-    print(f'### Step2B2 - Script to convent non empty csv to xlsx: {f_csv}')
-    logger.info(f'### Step2B2 - Script to convent non empty csv to xlsx: {f_csv}')
+    print(f'### Step3 - Script to convent csv to xlsx: {f_csv}')
+    logger.info(f'### Step3 - Script to convent csv to xlsx: {f_csv}')
 
 
     try:
