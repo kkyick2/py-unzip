@@ -1,63 +1,74 @@
 # py-unzip_script
 kkyick2, 20230707, for hkstp use
 
-# How to use
+## How to use
 
 method1: Usage: python unzip_script.py <full_root_path_to_process>
+method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
+
+## Quick Start Example
 
 ```sh
-col@ub22201:~/projects/python/py-unzip_script$ python3 unzip_script_script.py /home/col/projects/python/py-unzip_script/report_dir
+col@ub22201:~/projects/python/py-unzip_script$ python3 unzip_script.py /home/col/projects/python/py-unzip_script/report_dir
 ```
 
+## How to use (for lab with venv)
 
 ```sh
+# install venv
+col@ub22201:~/projects/python/py-unzip_script$ python3 -m venv venv
+# activate
 col@ub22201:~/projects/python/py-unzip_script$ source venv/bin/activate
 (venv) col@ub22201:~/projects/python/py-unzip_script$
+# pip install requirement
+(venv) col@ub22201:~/projects/python/py-unzip_script$ pip install -r requirements.txt
+# run the script
 (venv) col@ub22201:~/projects/python/py-unzip_script$ python unzip_script.py /home/col/projects/python/py-unzip_script/report_dir
 ```
 
-method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
-
-
 ## Description
 
-This script reead below folder structure, unzip pattern "xxxReport-YYYY-MM-DD-HHMM_SSSS.zip" and rename to "xxxReport-YYYY-MM-DD.csv"
-
-Before:
+This script read below folder structure, unzip pattern "xxxReport-YYYY-MM-DD-HHMM_SSSS.zip" and rename to "xxxReport-YYYY-MM-DD.csv"
+There are three types of reports
+     | 1 DNS Security Report
+     | 2 IPS Report
+     | 3 Web Usage Summary Report
 
 ```sh
-report_dir
-|--- T001
-     |--- DNS Security Report-2023-02-14-1704_1915.zip
-     |--- IPS Report-2023-02-14-1704_1915.zip
-     |--- Web Usage Summary Report-2023-02-14-1704_1915.zip
-|--- T002
-     |--- DNS Security Report-2023-02-14-1704_1915.zip
-     |--- IPS Report-2023-02-14-1704_1915.zip
-     |--- Web Usage Summary Report-2023-02-14-1704_1915.zip
-|--- T003
-     |--- DNS Security Report-2023-02-14-1704_1915.zip
-     |--- IPS Report-2023-02-14-1704_1915.zip
-     |--- Web Usage Summary Report-2023-02-14-1704_1915.zip
+# Before:
+# report_dir
+# |--- T001
+#      |--- T001-DNS-2023-02-14-1704_1915.zip
+#      |--- T001-IPS-2023-02-14-1704_1915.zip
+#      |--- T001-WEB-2023-02-14-1704_1915.zip
+# |--- T002
+#      |--- T001-DNS-2023-02-14-1704_1915.zip
+#      |--- T002-IPS-2023-02-14-1704_1915.zip
+#      |--- T003-WEB-2023-02-14-1704_1915.zip
+#
+# After:
+# report_dir
+# |--- T001
+#      |--- DNS_2023-02-14.csv
+#      |--- IPS_2023-02-14.csv
+#      |--- WEB_2023-02-14.csv
+# |--- T002
+#      |--- DNS_2023-02-14.csv
+#      |--- IPS_2023-02-14.csv
+#      |--- WEB_2023-02-14.csv
+#
+# Convent the csv to xlsx
+# report_dir
+# |--- T001
+#      |--- DNS_2023-02-14.xlsx
+#      |--- IPS_2023-02-14.xlsx
+#      |--- WEB_2023-02-14.xlsx
+# |--- T002
+#      |--- DNS_2023-02-14.xlsx
+#      |--- IPS_2023-02-14.xlsx
+#      |--- WEB_2023-02-14.xlsx
 ```
 
-After:
-
-```
-report_dir
-|--- T001
-     |--- DNS Security Report-2023-02-14.csv
-     |--- IPS Report-2023-02-14-1704.csv
-     |--- Web Usage Summary Report-2023-02-14.csv
-|--- T002
-     |--- DNS Security Report-2023-02-14.csv
-     |--- IPS Report-2023-02-14-1704.csv
-     |--- Web Usage Summary Report-2023-02-14.csv
-|--- T003
-     |--- DNS Security Report-2023-02-14.csv
-     |--- IPS Report-2023-02-14-1704.csv
-     |--- Web Usage Summary Report-2023-02-14.csv
-```
 ## crontab -e example
 
 To create a cron job that executes a script every 15 minutes between 12:00am to 6:00am:
@@ -71,6 +82,13 @@ To create a cron job that executes a script every 15 minutes between 12:00am to 
  *: Run the command every month
  *: Run the command every day of the week
  ```
+## Requirement
+
+```sh
+pip install openpyxl
+pip install pandas
+```
+
 
 ## History
 

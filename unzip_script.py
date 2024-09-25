@@ -10,7 +10,12 @@ version = '20240926'
 # method2: create a cron job with 'crontab -e' and verify with 'crontab -l'
 #
 # === Description ===
-# This script reead below folder structure, unzip pattern "xxxReport-YYYY-MM-DD-HHMM_SSSS.zip" and rename to "xxxReport-YYYY-MM-DD.csv"
+# This script read below folder structure, unzip pattern "xxxReport-YYYY-MM-DD-HHMM_SSSS.zip" and rename to "xxxReport-YYYY-MM-DD.csv"
+# There are three types of reports
+#     | 1 DNS Security Report
+#     | 2 IPS Report
+#     | 3 Web Usage Summary Report
+#
 # Before:
 # report_dir
 # |--- T001
