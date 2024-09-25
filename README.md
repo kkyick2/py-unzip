@@ -82,3 +82,4 @@ To create a cron job that executes a script every 15 minutes between 12:00am to 
 | 20240105 | 2024-0105 | use openpyxl to convent csv to xls |
 | 20240122 | 2024-0122 | handle web report cell "-nan " and "0 " value |
 | 20240202 | 2024-0202 | change filename pattern from (r"^(.*?)-\d{4}-\d{2}-\d{2}-\d{4}_\d{4}\.zip") to (r"^(.*?)-\d{4}-\d{2}-\d{2}-\d*_\d*\.zip")<br> fix empty csv cannot output xlsx issue |
+| 20240926 | 2024-0926 | handle web report cell '-nan ' and "'-nan ", updated logging messages and with counter |

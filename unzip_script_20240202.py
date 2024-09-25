@@ -3,7 +3,7 @@ from datetime import datetime
 from openpyxl import Workbook
 import pandas as pd
 import logging
-version = '20240926'
+version = '20240202'
 # kkyick2, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
@@ -92,26 +92,21 @@ def unzip_n_delete(dir):
     # Function to unzip and del the zip
 
     os.chdir(dir) # change directory from working dir to dir with files
-    print(f'### Step1 - Script to unzip and delete zip in dir: {os.path.basename(dir)}')
-    logger.info(f'### Step1 - Script to unzip and delete zip in dir: {os.path.basename(dir)}')
-
-    # Number of items in the folder
-    item_in_dir = len(os.listdir(dir))
-    if item_in_dir == 0:
+    print(f'### Step1 - Script to unzip and delete zip in dir: {dir}')
+    logger.info(f'### Step1 - Script to unzip and delete zip in dir: {dir}')
+    if len(os.listdir(dir)) == 0:
         print(f' Empty dir, skip')
         logger.info(f' Empty dir, skip')
     else:
         try:
-            count = 0
             for f in os.listdir(dir): # loop through items in dir
-                count = count + 1
                 pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d*_\d*\.zip"
-                print(f' [{count}/{item_in_dir}], processing file: {f}')
-                logger.info(f' [{count}/{item_in_dir}], processing file: {f}')
-                
+                print(f' processing file: {f}')
+                logger.debug(f' processing file: {f}')
+
                 if re.match(pattern, f):
-                    print(f' ACTION EXECUTE - unzip file: {f}')
-                    logger.info(f' ACTION EXECUTE - unzip file: {f}')
+                    print(f' unzip file: {f}')
+                    logger.info(f' unzip file: {f}')
 
                     fpath = os.path.abspath(f) # get full path
                     zip_ref = zipfile.ZipFile(fpath) # create zipfile object
@@ -129,22 +124,17 @@ def rename_csv(dir):
     # Function to remane csv
     
     os.chdir(dir) # change directory from working dir to dir with files
-    print(f'### Step2 - Script to rename csv in dir: {os.path.basename(dir)}')
-    logger.info(f'### Step2 - Script to rename csv in dir: {os.path.basename(dir)}')
-
-    # Number of items in the folder
-    item_in_dir = len(os.listdir(dir))
-    if item_in_dir == 0:
-        print(f' Empty dir, skip')
-        logger.info(f' Empty dir, skip')
+    print(f'### Step2 - Script to rename csv in dir: {dir}')
+    logger.info(f'### Step2 - Script to rename csv in dir: {dir}')
+    if len(os.listdir(dir)) == 0:
+        print(f' Empty dir, skip:')
+        logger.info(f' Empty dir, skip:')
     else:
         try:
-            count = 0
             for f in os.listdir(dir):
-                count = count + 1
                 pattern = r"^(.*?)-\d{4}-\d{2}-\d{2}-\d*_\d*\.csv"
-                print(f' [{count}/{item_in_dir}], processing file: {f}')
-                logger.info(f' [{count}/{item_in_dir}], processing file: {f}')
+                print(f' Processing file: {f}')
+                logger.debug(f' Processing file: {f}')
 
                 if re.match(pattern, f):
                     # rename csv
@@ -157,18 +147,18 @@ def rename_csv(dir):
                     f_newname_xlsx = fn[1]+'_'+fn[2]+'-'+fn[3]+'-'+fn[4]+'.xlsx'
                     if os.path.exists(f_newname_csv) == True:
                         os.remove(f)
-                        print(f' Found duplicate filename, deleted old file: {f_newname_csv}')
                         logger.info(f' Found duplicate filename, deleted old file: {f_newname_csv}')
                     print(f' Rename to: {f_newname_csv}')
                     logger.info(f' Rename to: {f_newname_csv}')
                     os.rename(f, f_newname_csv)
+
                     
-                    print(f' ### Step2A: checking {f_newname_csv} is empty csv?')
-                    logger.info(f' ### Step2A: checking {f_newname_csv} is empty csv?')
+                    print(f'### step2.0: checking {f_newname_csv} is empty csv?')
+                    logger.info(f'### step2.0: checking {f_newname_csv} is empty csv?')
                     # step2A: if csv empty, create empty excel
                     if os.stat(f_newname_csv).st_size == 0:  
-                        print(f' Create empty xlsx as csv is empty')
-                        logger.info(f' Create empty xlsx as csv is empty')
+                        print(f' Empty csv, create empty xlsx')
+                        logger.info(f' Empty csv, create empty xlsx')
                         df = pd.DataFrame() #create a empty dataframe
                         df.to_excel(f_newname_xlsx, index=False)
 
@@ -204,13 +194,11 @@ def modify_web_csv(f_csv):
     #"Allowed","0 ","-nan "
     #"Blocked","0 ","-nan "
     #
-    print(f' ### Step2B1 - Script to modify web report csv: {f_csv}')
-    logger.info(f' ### Step2B1 - Script to modify web report csv: {f_csv}')
+    print(f'### Step2B1 - Script to modify web report csv: {f_csv}')
+    logger.info(f'### Step2B1 - Script to modify web report csv: {f_csv}')
 
     fn = f_csv.split(".")
     f_csv_a = fn[0] + 'a.csv'
-    print(f' Create temp csv file: {f_csv_a}')
-    logger.info(f' Create temp csv file: {f_csv_a}')
 
     # modify the web report csv
     with open(f_csv, "r") as inf:
@@ -218,54 +206,31 @@ def modify_web_csv(f_csv):
         rows = list(reader)
         pattern1 = ['###Total Requests###']
         pattern2 = ['Allowed','Blocked']
-        pattern3 = ['-nan ',"\'-nan ",'-nan']
 
         # row0 if match "###Total Requests###"
         if(rows[0][0] in pattern1):
-            print(f' Reading original row0: {rows[0]} , matched pattern1: {pattern1}')
-            logger.info(f' Reading original row0: {rows[0]} , matched pattern1: {pattern1}')
+            print(f' Reading row0 matched pattern1: {rows[0]}')
+            logger.info(f' Reading row0 matched pattern1: {rows[0]}')
         
             # row2 "Allowed","0 ","-nan "
-            print(f' Reading original row2: {rows[2]}')
-            logger.info(f' Reading original row2: {rows[2]}')
-
+            print(f' Reading row2: {rows[2]}')
+            logger.info(f' Reading row2: {rows[2]}')
             if(rows[2][0] in pattern2):
-                print(f' --> matched row[2][1], raw value is: {rows[2][1]}')
-                logger.info(f' --> matched row[2][1], raw value is: {rows[2][1]}')
                 rows[2][1] = rows[2][1].strip() # "0 " to "0"
-                print(f' --> changed row[2][1] to {rows[2][1]}')
-                logger.info(f' --> changed row[2][1] to {rows[2][1]}')
-
-                if(rows[2][2] in pattern3): # "-nan " to "0"
-                    print(f' --> matched row[2][2], raw value is: {rows[2][2]}')
-                    logger.info(f' --> matched row[2][2], raw value is: {rows[2][2]}')
+                if(rows[2][2] == '-nan '):
                     rows[2][2] = '0'
-                    print(f' --> changed row[2][2] to {rows[2][2]}')
-                    logger.info(f' --> changed row[2][2] to {rows[2][2]}')
-
-            print(f' Final row2: {rows[2]}')
-            logger.info(f' Final row2: {rows[2]}')
+            print(f' Edited row2: {rows[2]}')
+            logger.info(f' Edited row2: {rows[2]}')
 
             # row3 "Blocked","0 ","-nan "
-            print(f' Reading original row3: {rows[3]}')
-            logger.info(f' Reading original row3: {rows[3]}')
-
+            print(f' Reading row3: {rows[3]}')
+            logger.info(f' Reading row3: {rows[3]}')
             if(rows[3][0] in pattern2):
-                print(f' --> matched row[3][1], raw value is: {rows[3][1]}')
-                logger.info(f' --> matched row[3][1], raw value is: {rows[3][1]}')
-                rows[3][1] = rows[3][1].strip() # "0 " to "0"
-                print(f' --> changed row[3][1] to {rows[3][1]}')
-                logger.info(f' --> changed row[3][1] to {rows[3][1]}')
-
-                if(rows[3][2] in pattern3): # "-nan " to "0"
-                    print(f' --> matched row[3][2], raw value is: {rows[3][2]}')
-                    logger.info(f' --> matched row[3][2], raw value is: {rows[3][2]}')
+                rows[3][1] = rows[3][1].strip()
+                if(rows[3][2] == '-nan '):
                     rows[3][2] = '0'
-                    print(f' --> changed row[3][2] to {rows[3][2]}')
-                    logger.info(f' --> changed row[3][2] to {rows[3][2]}')
-
-            print(f' Final row3: {rows[3]}')
-            logger.info(f' Final row3: {rows[3]}')
+            print(f' Edited row3: {rows[3]}')
+            logger.info(f' Edited row3: {rows[3]}')
 
             # Write new csv file
             with open(f_csv_a, "w", newline="") as outf:
@@ -278,21 +243,22 @@ def modify_web_csv(f_csv):
                 print(f' Delete old csv file: {f_csv}')
                 logger.info(f' Delete old csv file: {f_csv}')
                 os.remove(f_csv)
-                print(f' Rename temp csv {f_csv_a} to: {f_csv}')
-                logger.info(f' Rename temp csv {f_csv_a} to: {f_csv}')
+                print(f' Rename new csv {f_csv_a} to: {f_csv}')
+                logger.info(f' Rename new csv {f_csv_a} to: {f_csv}')
                 os.rename(f_csv_a, f_csv)
         # row0 if NOT match "###Total Requests###", skip
         else:
-            print(f' skip when reading row0: {rows[0]} , NOT match pattern1: {pattern1}')
-            logger.info(f' skip when reading row0: {rows[0]} , NOT match pattern1: {pattern1}')            
+            print(f' skip when reading row0 NOT matched pattern1: {rows[0]}')
+            logger.info(f' skip when reading row0 NOT matched pattern1: {rows[0]}')            
 
     return
 
 
 def convent_csv_xlsx(f_csv):
     # Function to convent csv to xlsx
-    print(f' ### Step2B2 - Script to convent non empty csv to xlsx: {f_csv}')
-    logger.info(f' ### Step2B2 - Script to convent non empty csv to xlsx: {f_csv}')
+    print(f'### Step2B2 - Script to convent non empty csv to xlsx: {f_csv}')
+    logger.info(f'### Step2B2 - Script to convent non empty csv to xlsx: {f_csv}')
+
 
     try:
         f_xlsx = f_csv[:-4] + '.xlsx'
@@ -310,8 +276,8 @@ def convent_csv_xlsx(f_csv):
         pass
     # remove csv after convent to xlsx
     if(os.path.isfile(f_xlsx)):
-        print(f' ACTION EXECUTE - Found xlsx {f_xlsx} and remove csv')
-        logger.info(f' ACTION EXECUTE - Found xlsx {f_xlsx} and remove csv')
+        print(f' Found xlsx {f_xlsx} and remove csv')
+        logger.info(f' Found xlsx {f_xlsx} and remove csv')
         os.remove(f_csv) 
     else:
         print(f' Convent fail!!! xlsx file not found!!!')
@@ -329,25 +295,16 @@ def process_input_dir(dir):
         logger.info('#'*50)
         logger.info(f'###### Step0 - START PROCESSING PATH: {dir}/{f}')
 
-        # Number of items in the folder
-        item_in_dir = len(os.listdir(os.path.join(dir, f)))
-
         if re.match(pattern, f):
-            print(f' Found match: {f}, {item_in_dir} item in folder')
-            logger.info(f' Found match: {f}, {item_in_dir} item in folder')
-            # Case1 Match Txx, empty folder
-            if item_in_dir == 0:
-                logger.info(f' Empty dir, skip')
-                print(f' Empty dir, skip')
-            # Case2 Match Txx
-            else:
-                # step1: unzip and delete
-                unzip_n_delete(os.path.join(dir, f))
+            print(f' Found match: {f}')
+            logger.info(f' Found match: {f}')
 
-                # step2: rename and convent to xlsx, del csv afterward
-                rename_csv(os.path.join(dir, f))
+            # step1: unzip and delete
+            unzip_n_delete(os.path.join(dir, f))
 
-        # Case3 Not match Txx
+            # step2: rename and convent to xlsx, del csv afterward
+            rename_csv(os.path.join(dir, f))
+
         else:
             logger.info(f' Not match, skip: {f}')
             print(f' Not match, skip: {f}')
@@ -369,10 +326,10 @@ if __name__ == "__main__":
     logger.info(f'###')
     print(f'############################################################## ')
     print(f'##################       START SCRIPT       ################## ')
-    print(f'### Search FAZ report csv each folder in: {dir}, Found {len(os.listdir(dir))} in dir, will check pattern Txx')
+    print(f'### Search FAZ report csv in each folder, pattern is Txx in directory: {dir}')
     logger.info(f'############################################################## ')
     logger.info(f'##################       START SCRIPT       ################## ')
-    logger.info(f'### Search FAZ report csv each folder in: {dir}, Found {len(os.listdir(dir))} in dir, will check pattern Txx')
+    logger.info(f'### Search FAZ report csv in each folder, pattern is Txx in directory: {dir}')
 
     process_input_dir(dir)
 
