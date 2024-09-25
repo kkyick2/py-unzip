@@ -1,0 +1,123 @@
+2024-09-26 00:51:05,051 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ###
+2024-09-26 00:51:05,051 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ###
+2024-09-26 00:51:05,052 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ############################################################## 
+2024-09-26 00:51:05,052 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ##################       START SCRIPT       ################## 
+2024-09-26 00:51:05,052 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ### Search FAZ report csv each folder in: /home/col/projects/python/py-unzip_script/report_dir, Found 10 in dir, will check pattern Txx
+2024-09-26 00:51:05,052 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,052 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/T015
+2024-09-26 00:51:05,053 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Found match: T015, 0 item in folder
+2024-09-26 00:51:05,053 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Empty dir, skip
+2024-09-26 00:51:05,054 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,054 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/raw4
+2024-09-26 00:51:05,054 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Not match, skip: raw4
+2024-09-26 00:51:05,055 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,055 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/T002
+2024-09-26 00:51:05,055 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Found match: T002, 1 item in folder
+2024-09-26 00:51:05,055 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    : ### Step1 - Script to unzip and delete zip in dir: T002
+2024-09-26 00:51:05,056 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [1/1], processing file: 123.zip
+2024-09-26 00:51:05,057 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  Not match, skip: 123.zip
+2024-09-26 00:51:05,058 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    : ### Step2 - Script to rename csv in dir: T002
+2024-09-26 00:51:05,058 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [1/1], processing file: 123.zip
+2024-09-26 00:51:05,058 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not match, skip: 123.zip
+2024-09-26 00:51:05,059 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,059 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/raw3
+2024-09-26 00:51:05,059 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Not match, skip: raw3
+2024-09-26 00:51:05,060 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,060 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/raw5_nan
+2024-09-26 00:51:05,060 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Not match, skip: raw5_nan
+2024-09-26 00:51:05,061 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,061 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/raw1
+2024-09-26 00:51:05,061 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Not match, skip: raw1
+2024-09-26 00:51:05,062 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,062 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/T976
+2024-09-26 00:51:05,063 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Found match: T976, 1 item in folder
+2024-09-26 00:51:05,063 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    : ### Step1 - Script to unzip and delete zip in dir: T976
+2024-09-26 00:51:05,063 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [1/1], processing file: 123.zip
+2024-09-26 00:51:05,064 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  Not match, skip: 123.zip
+2024-09-26 00:51:05,064 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    : ### Step2 - Script to rename csv in dir: T976
+2024-09-26 00:51:05,064 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [1/1], processing file: 123.zip
+2024-09-26 00:51:05,065 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not match, skip: 123.zip
+2024-09-26 00:51:05,065 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,065 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/T001
+2024-09-26 00:51:05,066 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Found match: T001, 6 item in folder
+2024-09-26 00:51:05,066 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    : ### Step1 - Script to unzip and delete zip in dir: T001
+2024-09-26 00:51:05,067 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [1/6], processing file: T001-WEB-2023-09-21-0000_16822.zip
+2024-09-26 00:51:05,067 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  ACTION EXECUTE - unzip file: T001-WEB-2023-09-21-0000_16822.zip
+2024-09-26 00:51:05,069 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [2/6], processing file: 456.txt
+2024-09-26 00:51:05,069 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  Not match, skip: 456.txt
+2024-09-26 00:51:05,070 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [3/6], processing file: WEB_2024-09-35.xlsx
+2024-09-26 00:51:05,070 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  Not match, skip: WEB_2024-09-35.xlsx
+2024-09-26 00:51:05,070 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [4/6], processing file: 123.txt
+2024-09-26 00:51:05,070 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  Not match, skip: 123.txt
+2024-09-26 00:51:05,071 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [5/6], processing file: T001-WEB-2024-09-25-0000_16813.zip
+2024-09-26 00:51:05,071 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  ACTION EXECUTE - unzip file: T001-WEB-2024-09-25-0000_16813.zip
+2024-09-26 00:51:05,073 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  [6/6], processing file: WEB_2023-09-31.xlsx
+2024-09-26 00:51:05,073 +0800: unzip_script: 60279.140242155839488: unzip_n_delete    : INFO    :  Not match, skip: WEB_2023-09-31.xlsx
+2024-09-26 00:51:05,074 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    : ### Step2 - Script to rename csv in dir: T001
+2024-09-26 00:51:05,074 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [1/6], processing file: 456.txt
+2024-09-26 00:51:05,074 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not match, skip: 456.txt
+2024-09-26 00:51:05,075 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [2/6], processing file: T001-WEB-2023-09-21-0000_16822.csv
+2024-09-26 00:51:05,075 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Found match: T001-WEB-2023-09-21-0000_16822.csv
+2024-09-26 00:51:05,076 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Rename to: WEB_2023-09-21.csv
+2024-09-26 00:51:05,077 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  ### Step2A: checking WEB_2023-09-21.csv is empty csv?
+2024-09-26 00:51:05,077 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not empty csv, process next step
+2024-09-26 00:51:05,079 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  ### Step2B1 - Script to modify web report csv: WEB_2023-09-21.csv
+2024-09-26 00:51:05,079 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Create temp csv file: WEB_2023-09-21a.csv
+2024-09-26 00:51:05,079 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Reading original row0: ['###Total Requests###'] , matched pattern1: ['###Total Requests###']
+2024-09-26 00:51:05,080 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Reading original row2: ['Allowed', '0 ', '-nan ']
+2024-09-26 00:51:05,080 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[2][1], raw value is: 0 
+2024-09-26 00:51:05,080 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[2][1] to 0
+2024-09-26 00:51:05,081 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[2][2], raw value is: -nan 
+2024-09-26 00:51:05,081 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[2][2] to 0
+2024-09-26 00:51:05,081 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Final row2: ['Allowed', '0', '0']
+2024-09-26 00:51:05,082 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Reading original row3: ['Blocked', '0 ', '-nan ']
+2024-09-26 00:51:05,082 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[3][1], raw value is: 0 
+2024-09-26 00:51:05,083 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[3][1] to 0
+2024-09-26 00:51:05,083 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[3][2], raw value is: -nan 
+2024-09-26 00:51:05,083 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[3][2] to 0
+2024-09-26 00:51:05,084 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Final row3: ['Blocked', '0', '0']
+2024-09-26 00:51:05,084 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Delete old csv file: WEB_2023-09-21.csv
+2024-09-26 00:51:05,085 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Rename temp csv WEB_2023-09-21a.csv to: WEB_2023-09-21.csv
+2024-09-26 00:51:05,085 +0800: unzip_script: 60279.140242155839488: convent_csv_xlsx  : INFO    :  ### Step2B2 - Script to convent non empty csv to xlsx: WEB_2023-09-21.csv
+2024-09-26 00:51:05,099 +0800: unzip_script: 60279.140242155839488: convent_csv_xlsx  : INFO    :  Convent from csv to xlsx: WEB_2023-09-21.xlsx
+2024-09-26 00:51:05,099 +0800: unzip_script: 60279.140242155839488: convent_csv_xlsx  : INFO    :  ACTION EXECUTE - Found xlsx WEB_2023-09-21.xlsx and remove csv
+2024-09-26 00:51:05,100 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [3/6], processing file: WEB_2024-09-35.xlsx
+2024-09-26 00:51:05,100 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not match, skip: WEB_2024-09-35.xlsx
+2024-09-26 00:51:05,100 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [4/6], processing file: 123.txt
+2024-09-26 00:51:05,100 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not match, skip: 123.txt
+2024-09-26 00:51:05,101 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [5/6], processing file: T001-WEB-2024-09-25-0000_16813.csv
+2024-09-26 00:51:05,101 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Found match: T001-WEB-2024-09-25-0000_16813.csv
+2024-09-26 00:51:05,101 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Rename to: WEB_2024-09-25.csv
+2024-09-26 00:51:05,102 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  ### Step2A: checking WEB_2024-09-25.csv is empty csv?
+2024-09-26 00:51:05,102 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not empty csv, process next step
+2024-09-26 00:51:05,102 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  ### Step2B1 - Script to modify web report csv: WEB_2024-09-25.csv
+2024-09-26 00:51:05,102 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Create temp csv file: WEB_2024-09-25a.csv
+2024-09-26 00:51:05,103 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Reading original row0: ['###Total Requests###', '', ''] , matched pattern1: ['###Total Requests###']
+2024-09-26 00:51:05,103 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Reading original row2: ['Allowed', '0', "'-nan "]
+2024-09-26 00:51:05,104 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[2][1], raw value is: 0
+2024-09-26 00:51:05,105 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[2][1] to 0
+2024-09-26 00:51:05,105 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[2][2], raw value is: '-nan 
+2024-09-26 00:51:05,105 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[2][2] to 0
+2024-09-26 00:51:05,105 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Final row2: ['Allowed', '0', '0']
+2024-09-26 00:51:05,106 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Reading original row3: ['Blocked', '0', "'-nan "]
+2024-09-26 00:51:05,106 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[3][1], raw value is: 0
+2024-09-26 00:51:05,106 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[3][1] to 0
+2024-09-26 00:51:05,106 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> matched row[3][2], raw value is: '-nan 
+2024-09-26 00:51:05,107 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  --> changed row[3][2] to 0
+2024-09-26 00:51:05,107 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Final row3: ['Blocked', '0', '0']
+2024-09-26 00:51:05,108 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Delete old csv file: WEB_2024-09-25.csv
+2024-09-26 00:51:05,108 +0800: unzip_script: 60279.140242155839488: modify_web_csv    : INFO    :  Rename temp csv WEB_2024-09-25a.csv to: WEB_2024-09-25.csv
+2024-09-26 00:51:05,109 +0800: unzip_script: 60279.140242155839488: convent_csv_xlsx  : INFO    :  ### Step2B2 - Script to convent non empty csv to xlsx: WEB_2024-09-25.csv
+2024-09-26 00:51:05,123 +0800: unzip_script: 60279.140242155839488: convent_csv_xlsx  : INFO    :  Convent from csv to xlsx: WEB_2024-09-25.xlsx
+2024-09-26 00:51:05,123 +0800: unzip_script: 60279.140242155839488: convent_csv_xlsx  : INFO    :  ACTION EXECUTE - Found xlsx WEB_2024-09-25.xlsx and remove csv
+2024-09-26 00:51:05,123 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  [6/6], processing file: WEB_2023-09-31.xlsx
+2024-09-26 00:51:05,123 +0800: unzip_script: 60279.140242155839488: rename_csv        : INFO    :  Not match, skip: WEB_2023-09-31.xlsx
+2024-09-26 00:51:05,123 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,124 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/raw2
+2024-09-26 00:51:05,124 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Not match, skip: raw2
+2024-09-26 00:51:05,124 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ##################################################
+2024-09-26 00:51:05,124 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    : ###### Step0 - START PROCESSING PATH: /home/col/projects/python/py-unzip_script/report_dir/T005
+2024-09-26 00:51:05,124 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Found match: T005, 0 item in folder
+2024-09-26 00:51:05,124 +0800: unzip_script: 60279.140242155839488: process_input_dir : INFO    :  Empty dir, skip
+2024-09-26 00:51:05,125 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ###############       END SCRIPT       ############### 
+2024-09-26 00:51:05,125 +0800: unzip_script: 60279.140242155839488: <module>          : INFO    : ###################################################### 
