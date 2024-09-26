@@ -3,7 +3,7 @@ from datetime import datetime
 from openpyxl import Workbook
 import pandas as pd
 import logging
-version = '20240926'
+version = '20240926a'
 # kkyick2, for hkstp
 # === How to use ===
 # method1: Usage: python unzip_script.py <full_root_path_to_process>
@@ -334,8 +334,13 @@ def process_input_dir(dir):
         logger.info('#'*50)
         logger.info(f'###### Step0 - START PROCESSING PATH: {dir}/{f}')
 
-        # Number of items in the folder
-        item_in_dir = len(os.listdir(os.path.join(dir, f)))
+        # Check number of items in the folder report_dir/Txx
+        # Count number of files inside sub folder
+        sub_dir = os.path.join(dir, f)
+        if os.path.isdir(sub_dir): 
+            item_in_dir = len(os.listdir(sub_dir))
+        else:
+            item_in_dir = 0
 
         if re.match(pattern, f):
             print(f' Found match: {f}, {item_in_dir} item in folder')
